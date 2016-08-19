@@ -42,6 +42,7 @@ streaming(currency_pair):websocketを利用したリアルタイム板情報と終値
 currency_pairはbtc_jpy、xem_jpy、mona_jpy、mona_btcが指定可能です
 
 詳細は下記参考を御覧ください。
+
 [参考](https://corp.zaif.jp/api-docs/)
 ***
 
