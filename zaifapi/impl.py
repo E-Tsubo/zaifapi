@@ -2,7 +2,6 @@
 import time
 import json
 import hmac
-import urllib
 import hashlib
 import inspect
 import requests
@@ -10,6 +9,8 @@ import cerberus
 from datetime import datetime
 from abc import ABCMeta
 from websocket import create_connection
+from future.moves.urllib.parse import urlencode
+
 
 SCHEMA = {
     'from_num': {
@@ -151,8 +152,8 @@ class ZaifPrivateApi(AbsZaifApi):
         self.__secret = secret
 
     def __get_header(self, params):
-        signature = hmac.new(self.__secret.encode('utf-8'), digestmod=hashlib.sha512)
-        signature.update(params)
+        signature = hmac.new(bytearray(self.__secret.encode('utf-8')), digestmod=hashlib.sha512)
+        signature.update(params.encode('utf-8'))
         return {
             'key': self.__key,
             'sign': signature.hexdigest()
@@ -162,7 +163,7 @@ class ZaifPrivateApi(AbsZaifApi):
     def __get_parameter(cls, func_name, params):
         params['method'] = func_name
         params['nonce'] = int(time.mktime(datetime.now().timetuple()))
-        return urllib.urlencode(params)
+        return urlencode(params)
 
     def __execute_api(self, func_name, schema_keys=[], params={}):
         params = self.params_pre_processing(schema_keys, params)
