@@ -178,7 +178,9 @@ class ZaifPrivateApi(AbsZaifApi):
         return res['return']
 
     def get_info(self):
-        return self.__execute_api(inspect.currentframe().f_code.co_name)
+		key = {}
+		param = {}
+        return self.__execute_api(inspect.currentframe().f_code.co_name, key, param)
 
     def trade_history(self, **kwargs):
         schema_keys = ['from_num', 'count', 'from_id', 'end_id', 'order', 'since', 'end', 'currency_pair']
